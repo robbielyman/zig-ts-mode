@@ -502,7 +502,195 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
       (line_comment)
       ] @font-lock-comment-face)
 
-   )
+   :feature 'brackets
+   :language 'zig
+   '([
+      "[" "]" "(" ")" "{" "}"
+      (Payload "|")
+      (PtrPayload "|")
+      (PtrIndexPayload "|")
+      ] @font-lock-bracket-face)
+
+   :feature 'misc-punctuation
+   :language 'zig
+   '([ ".." "..." ] @font-lock-misc-punctuation-face)
+
+   :feature 'delimiters
+   :language 'zig
+   '([ ";" "." "," ":" ] @font-lock-delimiter-face)
+
+   :feature 'operators
+   :language 'zig
+   '([
+      (CompareOp)
+      (BitwiseOp)
+      (BitShiftOp)
+      (AdditionOp)
+      (AssignOp)
+      (MultiplyOp)
+      (PrefixOp)
+      "*"
+      "**"
+      "->"
+      ".?"
+      ".*"
+      "?"] @font-lock-operator-face)
+
+   :feature 'builtin-constants
+   :language 'zig
+   '(["null" "unreachable" "undefined"] @font-lock-builtin-face)
+
+   :feature 'attributes
+   :language 'zig
+   '([
+      "comptime"
+      "export"
+      "extern"
+      "inline"
+      "noinline"
+      "packed"
+      "pub"
+      "threadlocal"] @font-lock-keyword-face)
+
+   :feature 'storageclass
+   :language 'zig
+   '([
+      "addrspace"
+      "align"
+      "callconv"
+      "linksection"
+      ] @font-lock-type-face)
+
+  :feature 'type-qualifier
+  :language 'zig
+  '([
+     "const"
+     "var"
+     "volatile"
+     "allowzero"
+     "noalias"
+     ] @font-lock-type-face)
+
+  :feature 'builtin-types
+  :language 'zig
+  '([
+     "anytype"
+     (BuildinTypeExpr)
+     ] @font-lock-type-face)
+
+  :feature 'try-catch
+  :language 'zig
+  '(["try" "catch"] @font-lock-keyword-face)
+
+  :feature 'include
+  :language 'zig
+  '(["usingnamespace"] @font-lock-keyword-face)
+
+  :feature 'keywords
+  :language 'zig
+  '(["asm" "defer" "errdefer" "test" "struct" "union" "enum" "opaque" "error"]
+    @font-lock-keyword-face)
+
+  :feature 'logic
+  :language 'zig
+  '(["and" "or" "orelse"] @font-lock-operator-face)
+
+  :feature 'async
+  :language 'zig
+  '(["async" "await" "suspend" "nosuspend" "resume"] @font-lock-keyword-face)
+
+  :feature 'fn
+  :language 'zig
+  '(["fn"] @font-lock-keyword-face)
+
+  :feature 'conditional
+  :language 'zig
+  '(["if" "else" "switch"] @font-lock-keyword-face)
+
+  :feature 'repeat
+  :language 'zig
+  '(["for" "while" "break" "continue"] @font-lock-keyword-face)
+
+  :feature 'labels
+  :language 'zig
+  '(((BreakLabel (IDENTIFIER) @font-lock-keyword-face))
+    ((BlockLabel (IDENTIFIER) @font-lock-keyword-face)))
+
+  :feature 'string-special
+  :language 'zig
+  '(((CHAR_LITERAL) @font-lock-escape-face)
+    ((EscapeSequence) @font-lock-escape-face)
+    ((FormatSequence) @font-lock-escape-face))
+
+  :feature 'string
+  :language 'zig
+  '([
+     (LINESTRING)
+     (STRINGLITERALSINGLE)
+     ] @font-lock-string-face)
+
+  :feature 'boolean
+  :language 'zig
+  '([ "true" "false" ] @font-lock-builtin-face)
+
+  :feature 'numbers
+  :language 'zig
+  '(((INTEGER) @font-lock-number-face)
+    ((FLOAT) @font-lock-number-face))
+
+  :feature 'builtin-calls
+  :language 'zig
+  '((BUILTINIDENTIFIER) @font-lock-builtin-face)
+
+  :feature 'enum-constants
+  :language 'zig
+  '(
+    ("." field_constant: (IDENTIFIER) @font-lock-constant-face)
+    ((ErrorSetDecl field_constant: (IDENTIFIER) @font-lock-constant-face)))
+
+  :feature 'misc-builtins
+  :language 'zig
+  '((
+     ((IDENTIFIER) @font-lock-builtin-face)
+     (:equal @font-lock-builtin-face "_")
+     )
+    ((FnProto exception: "!" @font-lock-builtin-face))
+    ((PtrTypeStart "c" @font-lock-builtin-face)))
+
+  :feature 'function
+  :language 'zig
+  '(((FnProto function: (IDENTIFIER) @font-lock-function-name-face))
+    ((SuffixExpr variable_type_function: (IDENTIFIER) @font-lock-function-call-face (FnCallArguments)))
+    ((FieldOrFnCall function_call: (IDENTIFIER) @font-lock-function-call-face)))
+
+  :feature 'variables
+  :language 'zig
+  '(((SuffixExpr variable_type_function: (IDENTIFIER) @font-lock-variable-use-face))
+    ((VarDecl variable_type_function: (IDENTIFIER) @font-lock-variable-name-face))
+    ((ParamDecl parameter: (IDENTIFIER) @font-lock-variable-name-face))
+    ((FieldOrFnCall field_access: (IDENTIFIER) @font-lock-variable-use-face))
+    ((ContainerField field_member: (IDENTIFIER) @font-lock-variable-name-face)))
+
+  :feature 'types
+  :override t
+  :language 'zig
+  '(([
+    (VarDecl variable_type_function: (IDENTIFIER) @font-lock-type-face)
+    (ParamDecl parameter: (IDENTIFIER) @font-lock-type-face)
+    (FieldOrFnCall field_access: (IDENTIFIER) @font-lock-type-face)
+    ]
+    (:match "^[A-Z]\\([a-z]+[A-Za-z_0-9]*\\)*$" @font-lock-type-face)))
+
+  :feature 'constants
+  :override t
+  :language 'zig
+  '(([
+    (VarDecl variable_type_function: (IDENTIFIER) @font-lock-constant-face)
+    (FieldOrFnCall field_access: (IDENTIFIER) @font-lock-constant-face)
+    ]
+    (:match @font-lock-type-face "^[A-Z][A-Z_0-9]+$")))
+
+  )
   "Tree-sitter font-lock settings.")
 
 ;;;###autoload
@@ -528,10 +716,10 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
   (when (treesit-ready-p 'zig)
     (treesit-parser-create 'zig)
     (setq-local treesit-font-lock-feature-list
-                '(()
-                  ()
-                  ()
-                  ()))
+                '((comment string numbers)
+                  (builtin-constants attributes keywords builtin-types type-qualifier function try-catch)
+                  (operators repeat conditional fn async logic include storageclass enum-constants builtin-calls boolean types)
+                  (brackets delimiters misc-punctuation labels misc-builtins string-special constants variables)))
     (setq-local treesit-font-lock-settings zig--treesit-font-lock-setting)
     (treesit-major-mode-setup)))
 
