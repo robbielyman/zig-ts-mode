@@ -483,7 +483,7 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
 
 (add-hook 'zig-mode-hook 'zig-file-coding-system)
 
-(defvar zig-mode-map
+(defvar zig-ts-mode-map
   (let ((map (make-sparse-keymap)))
 	(define-key map (kbd "C-c C-b") 'zig-compile)
 	(define-key map (kbd "C-c C-f") 'zig-format-buffer)
@@ -531,7 +531,7 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
       (PrefixOp)
       "*"
       "**"
-      "->"
+      "=>"
       ".?"
       ".*"
       "?"] @font-lock-operator-face)
@@ -676,6 +676,7 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
   :language 'zig
   '(([
     (VarDecl variable_type_function: (IDENTIFIER) @font-lock-type-face)
+    (SuffixExpr variable_type_function: (IDENTIFIER) @font-lock-type-face)
     (ParamDecl parameter: (IDENTIFIER) @font-lock-type-face)
     (FieldOrFnCall field_access: (IDENTIFIER) @font-lock-type-face)
     ]
@@ -686,16 +687,19 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
   :language 'zig
   '(([
     (VarDecl variable_type_function: (IDENTIFIER) @font-lock-constant-face)
+    (SuffixExpr variable_type_function: (IDENTIFIER) @font-lock-constant-face)
     (FieldOrFnCall field_access: (IDENTIFIER) @font-lock-constant-face)
     ]
-    (:match @font-lock-type-face "^[A-Z][A-Z_0-9]+$")))
+    (:match "^[A-Z][A-Z_0-9]+$" @font-lock-constant-face)))
 
   )
   "Tree-sitter font-lock settings.")
 
 ;;;###autoload
 (define-derived-mode zig-ts-mode prog-mode "Zig-ts"
-  "A tree-sitter-powered major mode for the Zig programming language."
+  "A tree-sitter-powered major mode for the Zig programming language.
+
+\\{zig-ts-mode-map}"
   :group 'zig-ts-mode
   (setq-local comment-start "// ")
   (setq-local comment-start-skip "//+ *")
