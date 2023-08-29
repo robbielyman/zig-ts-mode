@@ -569,7 +569,7 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
      "volatile"
      "allowzero"
      "noalias"
-     ] @font-lock-type-face)
+     ] @font-lock-keyword-face)
 
   :feature 'builtin-types
   :language 'zig
@@ -580,6 +580,7 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
 
   :feature 'try-catch
   :language 'zig
+  :override t
   '(["try" "catch"] @font-lock-keyword-face)
 
   :feature 'include
@@ -619,8 +620,8 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
   :feature 'string-special
   :language 'zig
   '(((CHAR_LITERAL) @font-lock-escape-face)
-    ((EscapeSequence) @font-lock-escape-face)
-    ((FormatSequence) @font-lock-escape-face))
+    ((EscapeSequence) @font-lock-string-face)
+    ((FormatSequence) @font-lock-string-face))
 
   :feature 'string
   :language 'zig
