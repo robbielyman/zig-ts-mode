@@ -384,7 +384,11 @@ This is written mainly to be used as `end-of-defun-function' for Zig."
                       (zig-skip-backwards-past-whitespace-and-comments)
                       (when (> (point) 1)
                         (backward-char)
-                        (not (looking-at "[,;([{}]")))))))
+                        (and
+                         (not (looking-at "[,;([{}]"))
+                         (save-excursion
+                           (back-to-indentation)
+                           (not (looking-at "//[/!]?")))))))))
              ;; Now we can calculate indent-col:
              (if is-expr-continutation
                  (+ base-indent-col zig-indent-offset)
